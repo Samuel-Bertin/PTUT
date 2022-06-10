@@ -7,6 +7,7 @@
 			<?php
 				require('./connexion.php');
 				$req = $db->prepare('Select Type_activités from variables');
+			echo"aaaaaaaa";
 			?>
 			<form action="ajoutfichier.php" method="post" name="ajouterfichier">
 				Nom du parcours<input type="text" name="nom"><br/>
