@@ -1,12 +1,11 @@
-<?php
+<?php    
+
     require('../../php/PointsGPX.php');
     require('../../php/connexionDB.php');
     
     session_start();
     ob_start();
-
-
-
+        
     function placeholder($statistique){
         $tableau_stat = array(0 => 'distance', 1 => 'temps', 2 => 'denivele', 3 => 'date', 4 => 'nom', 5 => 'duree');
         if(isset($_SESSION["$statistique"]) and !empty($_SESSION["$statistique"])){
@@ -138,7 +137,7 @@
                                 <label for="temps">Temps</label>
                                 <span class="erreur text-red-500 text-sm">Temps non calculée</span>
                             </div>
-                            <input  type="text" name="duree" id="temps"<?php echo placeholder("duree"); ?>
+                            <input  type="time" step="1" name="duree" id="temps"<?php echo placeholder("duree"); ?>
                             class="border-2  border-gray-300 p-4 rounded-md shadow-sm w-full focus:outline-none focus:ring-1 focus:ring-purple-400">
                         </div>
 
@@ -208,9 +207,9 @@
                             </div>
                             <div class="flex justify-around items-center py-4 mt-2 border-gray-300 border-2 rounded-md">
                                 <label for="oui"><i class="fas fa-check-circle"></i></label>
-                                <input type="radio" name="ht" id="oui" class="text-purple-400 focus:ring-1 focus:ring-purple-400">
+                                <input type="radio" name="ht" id="oui" value ="oui" class="text-purple-400 focus:ring-1 focus:ring-purple-400">
                                 <label for="non"><i class="fas fa-times-circle"></i></i></label>
-                                <input type="radio" name="ht" id="non" class="text-purple-400 focus:ring-1 focus:ring-purple-400">
+                                <input type="radio" name="ht" id="non" value="non" class="text-purple-400 focus:ring-1 focus:ring-purple-400">
                             </div>
                         </div>
 
@@ -241,9 +240,9 @@
                     </div>
                     <div class="flex justify-around items-center py-4 mt-2 border-gray-300 border-2 rounded-md">
                         <label for="seul"><i class="fas fa-user"></i></label>
-                        <input type="radio" name="group" id="seul" class="text-purple-400 focus:ring-1 focus:ring-purple-400">
+                        <input type="radio" name="group" id="seul" value="seul" class="text-purple-400 focus:ring-1 focus:ring-purple-400">
                         <label for="groupe"><i class="fas fa-users"></i></label>
-                        <input type="radio" name="group" id="groupe" class="text-purple-400 focus:ring-1 focus:ring-purple-400">
+                        <input type="radio" name="group" id="groupe" value="groupe" class="text-purple-400 focus:ring-1 focus:ring-purple-400">
                     </div>
                 </div>
 
@@ -265,18 +264,43 @@
                             </input>
                         
                 </div>
-
                 <!-- Submit -->
                 <div class="flex flex-col md:flex-row gap-3 justify-around mb-8">
                     <a href="../index.html" class="bg-red-400 text-white py-3 px-7 rounded-md text-center">Retour</a>
                     <button type="reset" class="bg-gray-400 text-white py-3 px-7 rounded-md text-center">Tout Effacer</button>
-                    <button type="submit" class="bg-purple-400 text-white py-3 px-7 rounded-md text-center" name="creer">Créer Parcours</button>
-                    <button type="submit" class="bg-purple-400 text-white py-3 px-7 rounded-md text-center" name="ajouter">Ajouter à un Parcours</a>
+
+                  </form>
+				  
+				  <form id="creer" method="POST" name="form" onsubmit="return submitForm(this);" action="../../php/ajout_points_nouveau_parcours.php">
+					<input type="submit" class="bg-purple-400 text-white py-3 px-7 rounded-md text-center" name="creer" value="Créer parcours">
+					</form>
+					
+					
+				  <form id="ajout" method="POST" name="form" onsubmit="return submitForm(this);" action="../../php/submitparcours.php">
+					<input type="submit" class="bg-purple-400 text-white py-3 px-7 rounded-md text-center" name="ajout" id="form" value="Ajouter à Parcours">
+				  </form>
+				  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+		<script>
+						function submitForm(form) {
+							swal({
+								title: "Avez-vous bien vérifié les informations ?",
+								//text: "",
+								icon: "info", 
+								buttons:["Annuler",true],
+								dangerMode: false,
+							})
+							.then(function (isOkay) {
+								if (isOkay) {
+									form.submit();
+								}
+							});
+							return false;
+						}
+					</script>
                 </div>
-
-            </form>
+			
         </div>
-
+	
     </section>
 </body>
 </html>
