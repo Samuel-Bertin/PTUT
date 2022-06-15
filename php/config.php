@@ -1,6 +1,6 @@
 <?php
 $host='localhost';
-$db='ptut_v4';
+$db='ptut_v5';
 $user='root';
 $pwd='';    
 ?>
