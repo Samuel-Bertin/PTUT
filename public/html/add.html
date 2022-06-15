@@ -62,6 +62,7 @@
         }
     }
     var_dump($_FILES);
+	print_r ($_POST);
 ?>
 
 <!DOCTYPE html>
@@ -276,21 +277,13 @@
                         
                 </div>
 
-					               <!-- Submit -->
+				 <!-- Submit -->
                 <div class="flex flex-col md:flex-row gap-3 justify-around mb-8">
                     <a href="../index.html" class="bg-red-400 text-white py-3 px-7 rounded-md text-center">Retour</a>
                     <button type="reset" class="bg-gray-400 text-white py-3 px-7 rounded-md text-center">Tout Effacer</button>
-
-                  </form>
-				  
-				  <form id="creer" method="POST" name="form" onsubmit="return submitForm(this);" action="../../php/ajout_points_nouveau_parcours.php">
-					<input type="submit" class="bg-purple-400 text-white py-3 px-7 rounded-md text-center" name="creer" value="Créer parcours">
-					</form>
-					
-					
-				  <form id="ajout" method="POST" name="form" onsubmit="return submitForm(this);" action="../../php/submitparcours.php">
-					<input type="submit" class="bg-purple-400 text-white py-3 px-7 rounded-md text-center" name="ajout" id="form" value="Ajouter à Parcours">
-				  </form>
+                    <button type="submit" class="bg-purple-400 text-white py-3 px-7 rounded-md text-center" name="creer">Créer Parcours</button>
+                    <button type="submit" class="bg-purple-400 text-white py-3 px-7 rounded-md text-center" name="ajouter">Ajouter à un Parcours</a>
+                </div>
 				  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 		<script>
 						function submitForm(form) {
@@ -312,4 +305,5 @@
                 </div>
     </section>
 </body>
+
 </html>
