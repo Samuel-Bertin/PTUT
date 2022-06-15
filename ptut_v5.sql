@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : lun. 13 juin 2022 à 17:03
+-- Généré le : mer. 15 juin 2022 à 16:50
 -- Version du serveur :  10.4.14-MariaDB
 -- Version de PHP : 7.4.11
 
@@ -39,10 +39,10 @@ CREATE TABLE `activite` (
 INSERT INTO `activite` (`Nom`, `Value`) VALUES
 ('VTT', 1),
 ('Running', 2),
-('Nage (Mer)', 3),
-('Nage (Rivière / Lac) ', 4),
+('Nage', 3),
 ('Kayak', 5),
-('Randonnée', 6);
+('Randonnée', 6),
+('Non Renseignée', 28);
 
 -- --------------------------------------------------------
 
@@ -65,6 +65,54 @@ CREATE TABLE `fichier` (
   `Groupe` tinyint(1) NOT NULL,
   `Nom` varchar(100) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Déclencheurs `fichier`
+--
+DELIMITER $$
+CREATE TRIGGER `T_A_D_FICHIER` AFTER DELETE ON `fichier` FOR EACH ROW delete from point_gpx where id_fichier = OLD.id_fichier
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `deleteRepertoire` AFTER DELETE ON `fichier` FOR EACH ROW BEGIN
+    IF (SELECT COUNT(*) FROM fichier WHERE Id_Parcours = OLD.Id_Parcours) = 0 THEN
+        DELETE FROM repertoire WHERE Id_Parcours = OLD.Id_Parcours;
+    END IF;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `insertActivite` AFTER INSERT ON `fichier` FOR EACH ROW BEGIN
+    IF (SELECT COUNT(*) FROM activite WHERE Nom = NEW.type_activite) = 0 THEN
+        INSERT INTO activite (Nom) VALUES (NEW.type_activite);
+    END IF;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `insertVille` AFTER INSERT ON `fichier` FOR EACH ROW BEGIN
+    IF (SELECT COUNT(*) FROM ville WHERE Nom = NEW.Ville_Depart) = 0 THEN
+        INSERT INTO ville (Nom) VALUES (NEW.Ville_Depart);
+    END IF;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `updateActivite` AFTER UPDATE ON `fichier` FOR EACH ROW BEGIN
+    IF (SELECT COUNT(*) FROM activite WHERE Nom = NEW.type_activite) = 0 THEN
+        INSERT INTO activite (Nom) VALUES (NEW.type_activite);
+    END IF;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `updateVille` AFTER UPDATE ON `fichier` FOR EACH ROW BEGIN
+    IF (SELECT COUNT(*) FROM ville WHERE Nom = NEW.Ville_Depart) = 0 THEN
+        INSERT INTO ville (Nom) VALUES (NEW.Ville_Depart);
+    END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -112,6 +160,50 @@ CREATE TABLE `repertoire` (
   `Nom` varchar(50) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `utilisateur`
+--
+
+CREATE TABLE `utilisateur` (
+  `Login` varchar(50) NOT NULL,
+  `Password` varchar(50) NOT NULL,
+  `Mail` varchar(50) NOT NULL,
+  `tokeninit` char(8) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `utilisateur`
+--
+
+INSERT INTO `utilisateur` (`Login`, `Password`, `Mail`, `tokeninit`) VALUES
+('admin', 'PTUT2022', 'agence.2bcl@gmail.com', '37852552');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `ville`
+--
+
+CREATE TABLE `ville` (
+  `Nom` varchar(50) NOT NULL,
+  `Value` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `ville`
+--
+
+INSERT INTO `ville` (`Nom`, `Value`) VALUES
+('Toulouse', 1),
+('Blagnac', 2),
+('Montauban', 3),
+('Albi', 4),
+('Castres', 5),
+('Castelnaudary', 6),
+('Non Renseignée', 7);
+
 --
 -- Index pour les tables déchargées
 --
@@ -153,6 +245,19 @@ ALTER TABLE `repertoire`
   ADD PRIMARY KEY (`Id_Parcours`);
 
 --
+-- Index pour la table `utilisateur`
+--
+ALTER TABLE `utilisateur`
+  ADD PRIMARY KEY (`Login`);
+
+--
+-- Index pour la table `ville`
+--
+ALTER TABLE `ville`
+  ADD PRIMARY KEY (`Nom`),
+  ADD UNIQUE KEY `Value` (`Value`);
+
+--
 -- AUTO_INCREMENT pour les tables déchargées
 --
 
@@ -160,13 +265,13 @@ ALTER TABLE `repertoire`
 -- AUTO_INCREMENT pour la table `activite`
 --
 ALTER TABLE `activite`
-  MODIFY `Value` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `Value` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT pour la table `fichier`
 --
 ALTER TABLE `fichier`
-  MODIFY `Id_Fichier` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Id_Fichier` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT pour la table `meteo`
@@ -178,7 +283,13 @@ ALTER TABLE `meteo`
 -- AUTO_INCREMENT pour la table `repertoire`
 --
 ALTER TABLE `repertoire`
-  MODIFY `Id_Parcours` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Id_Parcours` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT pour la table `ville`
+--
+ALTER TABLE `ville`
+  MODIFY `Value` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
