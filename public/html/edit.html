@@ -347,9 +347,11 @@
                     <!-- Submit -->
                     <div class=\"flex flex-col md:flex-row gap-3 justify-around mb-8\">
                         <a href=\"../index.html\" class=\"bg-red-400 text-white py-3 px-7 rounded-md text-center\">Accueil</a>
-                        <button type=\"submit\" name=\"modifier\" class=\"bg-purple-400 text-white py-3 px-7 rounded-md text-center\">Modifier Trace</button>
-                    </div>
+                        
+						<input type=\"submit\" class=\"bg-purple-400 text-white py-3 px-7 rounded-md text-center\" id=\"modifier\" name=\"modifier\" value=\"Modifier\" onclick=\"if(confirm('Etes-vous sûr de modifier le parcours ?')){}else{return false;};\" />
 
+                    </div>
+<button type=\"submit\" name=\"modifier\" class=\"bg-purple-400 text-white py-3 px-7 rounded-md text-center\">Modifier Trace</button>
                     </form>
                     </div>
                     
@@ -430,9 +432,7 @@
     <!-- Saisie  -->
     <section class="relative">
 
-        <div class="container flex flex-col md:flex-row gap-3">
-            <h2 class="font-semibold text-lg text-purple-600">Trace(s) associée(s) à ce parcours : </h2>
-            <div class="flex gap-2" id="traces">
+  
                 <?php  echo liste_fichiers_parcours() ; ?>
             </div>
         </div>

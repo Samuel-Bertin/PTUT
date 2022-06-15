@@ -61,10 +61,9 @@
             }
         }
     }
-<<<<<<< HEAD
-    var_dump($_FILES);
-	print_r ($_POST);
-=======
+
+ 
+
 
     function returnOptionsActivite(){
         $result = "";
@@ -91,7 +90,6 @@
     }
 
 
->>>>>>> 491d7886538763972d89eca0298c29a55c5f2ea6
 ?>
 
 <!DOCTYPE html>
@@ -301,27 +299,10 @@
                 <div class="flex flex-col md:flex-row gap-3 justify-around mb-8">
                     <a href="../index.html" class="bg-red-400 text-white py-3 px-7 rounded-md text-center">Retour</a>
                     <button type="reset" class="bg-gray-400 text-white py-3 px-7 rounded-md text-center">Tout Effacer</button>
-                    <button type="submit" class="bg-purple-400 text-white py-3 px-7 rounded-md text-center" name="creer">Créer Parcours</button>
+					<input type="submit" class="bg-purple-400 text-white py-3 px-7 rounded-md text-center" id="creer" name="creer" value="Créer Parcours" onclick="if(confirm('Etes-vous sûr de créer ?')){}else{return false;};" />
                     <button type="submit" class="bg-purple-400 text-white py-3 px-7 rounded-md text-center" name="ajouter">Ajouter à un Parcours</a>
                 </div>
-				  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-		<script>
-						function submitForm(form) {
-							swal({
-								title: "Avez-vous bien vérifié les informations ?",
-								//text: "",
-								icon: "info", 
-								buttons:["Annuler",true],
-								dangerMode: false,
-							})
-							.then(function (isOkay) {
-								if (isOkay) {
-									form.submit();
-								}
-							});
-							return false;
-						}
-					</script>
+		
                 </div>
     </section>
 </body>
