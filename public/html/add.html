@@ -61,8 +61,37 @@
             }
         }
     }
+<<<<<<< HEAD
     var_dump($_FILES);
 	print_r ($_POST);
+=======
+
+    function returnOptionsActivite(){
+        $result = "";
+        $linkpdo = connexion();
+        $query = "select * from ACTIVITE";
+        $preparation_query = $linkpdo->prepare($query);
+        $preparation_query->execute();
+        while ($row = $preparation_query->fetch(PDO::FETCH_ASSOC)) {
+            $result .= "<option value=\"".$row['Nom']."\">";
+        }
+        return $result;
+    }
+
+    function returnOptionsVille(){
+        $result = "";
+        $linkpdo = connexion();
+        $query = "select * from VILLE";
+        $preparation_query = $linkpdo->prepare($query);
+        $preparation_query->execute();
+        while ($row = $preparation_query->fetch(PDO::FETCH_ASSOC)) {
+            $result .= "<option value=\"".$row['Nom']."\">";
+        }
+        return $result;
+    }
+
+
+>>>>>>> 491d7886538763972d89eca0298c29a55c5f2ea6
 ?>
 
 <!DOCTYPE html>
@@ -86,7 +115,7 @@
         <nav class=" flex items-center bg-purple-400 py-4 px-12">
             <h2 class="uppercase font-semibold text-lg cursor-pointer"><a href="../index.html">Gpx Finder</a></h2>
             <ul class="hidden md:flex flex-1 items-center justify-end gap-12 text-sm">
-                <li class="uppercase cursor-pointer"><a href="dragNdrop.html">Ajouter</a></li>
+                <li class="uppercase cursor-pointer"><a href="add.html">Ajouter</a></li>
                 <li class="uppercase cursor-pointer"><a href="search.html">Rechercher</a></li>
                 <button type="button" class="bg-red-400 text-white py-3 px-7 rounded-md uppercase">Logout</button>
                 <div><img src="../img/user.png" alt="Avatar"></div>
@@ -111,7 +140,7 @@
 
                     <div class="flex flex-col gap-8 nom_desc">
 
-                        <span class="erreur text-sm text-red-500"><?php echo returnError('nom'); ?></span>
+                        <span class='erreur text-sm text-red-500'><?php echo returnError('nom'); ?></span>
                         <input type="text" name="nom" placeholder="Nom de la trace" value="<?php if (isset($_SESSION['nom'])) {echo $_SESSION['nom'];}?>"
                         class="border-2 border-gray-300 p-4 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-purple-400">
 
@@ -169,15 +198,10 @@
                             </div>
                             <input type="text" list="activites" name="activite" id="activite" class="border-2 border-gray-300 p-4 rounded-md shadow-sm w-full focus:outline-none focus:ring-1 focus:ring-purple-400" <?php if (isset($_SESSION['activite'])) {echo $_SESSION['activite'];}?>">
                                 <datalist id="activites">
-                                    <option value="VTT"></option>
-                                    <option value="Course à pieds"></option>
-                                    <option value="Randonée pedestre"></option>
-                                    <option value="Natation"></option>
-                                    <option value="Vélo de route"></option>
-                                    <option value="Kayak"></option>
+                                    <option value="Non Renseignée">
+                                    <?php echo returnOptionsActivite()?>
                                 </datalist>
-                            </input>
-                                
+                            </input> 
                         </div>
 
                         
@@ -201,12 +225,8 @@
                             </div>
                             <input type="text" list="villes" name="ville" id="ville" class="border-2 border-gray-300 p-4 rounded-md shadow-sm w-full focus:outline-none focus:ring-1 focus:ring-purple-400" value="<?php if (isset($_SESSION['ville'])) {echo $_SESSION['ville'];}?>">
                                 <datalist id="villes">
-                                    <option value="Toulouse"></option>
-                                    <option value="Blagnac"></option>
-                                    <option value="Albi"></option>
-                                    <option value="Auch"></option>
-                                    <option value="Saint-Orens"></option>
-                                    <option value="Villefranche"></option>
+                                <option value="Non Renseignée">
+                                    <?php echo returnOptionsVille()?>
                                 </datalist>
                             </input>
                                 

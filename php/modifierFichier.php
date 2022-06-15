@@ -9,11 +9,86 @@ verifVariables();
 if (isset($_POST['modifier'])) {
     //si la taille du tableau $_SESSION['erreurs'] est vide, on peut ajouter le parcours
     if (empty($_SESSION['erreurs'])) {
-        header('Location: ../public/html/search.html');
+        modifierFichier();
+        header ('Location: ../public/html/show.html?fichier='.$_SESSION['edit']['id_fichier']."&parcours=".$_GET['parcours']);
     } else {
         var_dump($_SESSION['erreurs']);
         header ('Location: ../public/html/edit.html?id_fichier='.$_SESSION['edit']['id_fichier']);
     }
+    
+}
+
+function modifierFichier() {
+
+    if(!isset($_SESSION['ht'])){
+        $hometrainer = NULL;
+    } else{
+        $hometrainer = 0;
+        switch($_SESSION['ht']){
+            case 'oui':
+                $_SESSION['ht'] = 1;
+                break;
+            case 'non':
+                $_SESSION['ht'] = 0;
+                break;
+        }
+    }
+    
+    if(!isset($_SESSION['meteo'])){
+        $_SESSION['meteo'] = NULL;
+    } 
+    
+
+    if(!isset($_SESSION['group'])){
+        $_SESSION['group'] = NULL;
+    } else{
+        switch($_SESSION['group']){
+            case 'groupe':
+                $_SESSION['group'] = 1;
+                break;
+            case 'seul':
+                $_SESSION['group'] = 0;
+                break;   
+        }       
+    }
+
+    $linkpdo = connexion();
+    $req = (" UPDATE fichier SET nom = :nom, ville_depart = :ville_depart, date_parcours = :date_parcours, duree = :duree, distance = :distance, 
+    description = :description , home_trainer = :home_trainer, groupe = :groupe, denivele = :denivele, type_activite = :type_activite, meteo = :meteo 
+    WHERE id_fichier = :id_fichier ");
+    $res = $linkpdo->prepare($req);
+    $res->bindParam(':nom', $_SESSION['nom']);
+    $res->bindParam(':description', $_SESSION['desc']);
+    $res->bindParam(':distance', $_SESSION['distance']);
+    $res->bindParam(':ville_depart', $_SESSION['ville']);
+    $res->bindParam(':duree', $_SESSION['duree']);
+    $res->bindParam(':date_parcours', $_SESSION['date']);
+    $res->bindParam(':home_trainer', $_SESSION['ht']);
+    $res->bindParam(':groupe', $_SESSION['groupe']);
+    $res->bindParam(':denivele', $_SESSION['denivele']);
+    $res->bindParam(':type_activite', $_SESSION['activite']);
+    $res->bindParam(':meteo', $_SESSION['meteo']);
+    $res->bindParam(':id_fichier', $_SESSION['edit']['id_fichier']);
+
+    if(! $res->execute(
+        // array(
+        //     'nom' => $_SESSION['nom'],
+        //     'description ' => $_SESSION['desc'],
+        //     'distance ' => $_SESSION['distance'],
+        //     'ville_depart' => $_SESSION['ville'],
+        //     'duree' => $_SESSION['duree'],
+        //     'date_parcours' => $_SESSION['date'],
+        //     'home_trainer' => $_SESSION['ht'],
+        //     'groupe' => $_SESSION['groupe'],
+        //     'denivele' => $_SESSION['denivele'],
+        //     'type_activite' => $_SESSION['activite'],
+        //     'meteo' => $_SESSION['meteo']
+        // )
+    )){
+        $res->debugDumpParamas();
+    }
+
+    
     
 }
 
@@ -22,7 +97,7 @@ function verifVariables() {
     if (isset($_POST['nom'])) {
         $nom = $_POST['nom'];
         //Le nom ne doit contenir que des lettres, des chiffres ou des espaces et doit faire entre 2 et 50 caractères
-        if (!preg_match("/^[a-zA-Z ]{2,50}$/", $nom)) {
+        if (!preg_match("/^[0-9a-zA-Z áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]{2,50}$/", $nom)) {
             $_SESSION['erreurs']['nom'] = "Le nom doit contenir entre 2 et 50 caractères non numériques";
         } else {
             //unset 

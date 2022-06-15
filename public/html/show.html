@@ -1,10 +1,9 @@
 <?php 
-    // Test avec l'url : http://localhost/PTUTHub/PTUT/public/html/show.html?parcours=16
     require('../../php/PointsGPX.php');
     require('../../php/connexionDB.php'); 
 
     session_start();
-    
+    unset($_SESSION['erreurs']);
     
 
     function recuperer_points_fichier($id_fichier){
@@ -197,7 +196,7 @@
             <!-- Resultat Trace ".$compteur." -->
             <div id=\"trace".$compteur."\" class=\"result container my-8\">
             
-                        <form action=\"#\" method=\"post\">
+                        <form action=\"edit.html?fichier=".$data['id_fichier']."&parcours=".$_GET['parcours']."\" method=\"post\">
                         
 
 
@@ -329,22 +328,20 @@
                                         </input>
                                     
                             </div>
-                            ";
-                if($compteur == 1){
-                    $onglets .=                     
-                    "
+                            
                     <!-- Submit -->
                     <div class=\"flex flex-col md:flex-row gap-3 justify-around mb-8\">
                         <a href=\"../index.html\" class=\"bg-red-400 text-white py-3 px-7 rounded-md text-center\">Accueil</a>
                         <a download=\"".str_replace(' ','_',$data['nom']).".gpx\" href=\"../../php/fichiers_telecharges/".$data['id_fichier'].".gpx\" class=\"bg-gray-400 text-white py-3 px-7 rounded-md text-center\">Télécharger le fichier</a>
                         <button type=\"submit\" class=\"bg-purple-400 text-white py-3 px-7 rounded-md text-center\">Modifier Trace</button>
+                        <a href=\"../../php/delete.php?fichier=".$data['id_fichier']."&parcours=".$_GET['parcours']."\" class=\"bg-red-400 text-white py-3 px-7 rounded-md text-center\">Supprimer</button>
                     </div>
 
                     </form>
                     </div>
                     
                 ";
-                }
+                
                 $onglets .= "</form> </div>";
                 $compteur = $compteur + 1;
         }
