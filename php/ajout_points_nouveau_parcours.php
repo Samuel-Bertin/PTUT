@@ -91,7 +91,7 @@
                     'meteo' => $meteo,
                     'denivele' => $_SESSION["denivele"],
                     'home_trainer' => $hometrainer,
-                    'groupe' => $groupe
+                    'groupe' => $groupe,
                 )
             )){
                 echo "Fichier bien cree <br>";
