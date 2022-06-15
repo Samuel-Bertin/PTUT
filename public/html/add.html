@@ -294,6 +294,7 @@
                             </input>
                         
                 </div>
+<<<<<<< HEAD
 
 				 <!-- Submit -->
                 <div class="flex flex-col md:flex-row gap-3 justify-around mb-8">
@@ -304,6 +305,45 @@
                 </div>
 		
                 </div>
+=======
+                <!-- Submit -->
+                <div class="flex flex-col md:flex-row gap-3 justify-around mb-8">
+                    <a href="../index.html" class="bg-red-400 text-white py-3 px-7 rounded-md text-center">Retour</a>
+                    <button type="reset" class="bg-gray-400 text-white py-3 px-7 rounded-md text-center">Tout Effacer</button>
+
+                  </form>
+				  
+				  <form id="creer" method="POST" name="form" onsubmit="return submitForm(this);" action="../../php/ajout_points_nouveau_parcours.php">
+					<input type="submit" class="bg-purple-400 text-white py-3 px-7 rounded-md text-center" name="creer" value="Créer parcours">
+					</form>
+					
+					
+				  <form id="ajout" method="POST" name="form" onsubmit="return submitForm(this);" action="../../php/submitparcours.php">
+					<input type="submit" class="bg-purple-400 text-white py-3 px-7 rounded-md text-center" name="ajout" id="form" value="Ajouter à Parcours">
+				  </form>
+				  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+		<script>
+						function submitForm(form) {
+							swal({
+								title: "Avez-vous bien vérifié les informations ?",
+								//text: "",
+								icon: "info", 
+								buttons:["Annuler",true],
+								dangerMode: false,
+							})
+							.then(function (isOkay) {
+								if (isOkay) {
+									form.submit();
+								}
+							});
+							return false;
+						}
+					</script>
+                </div>
+			
+        </div>
+	
+>>>>>>> db4b7a985f29fe9db3b067311b16e43b950562e2
     </section>
 </body>
 
