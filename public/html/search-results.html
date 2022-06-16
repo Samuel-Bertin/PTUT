@@ -1,5 +1,6 @@
 <?php
-
+    session_start();
+    require('../../php/utils/verifIntegrite.php');
     require '../../php/rechercheAvancee.php'
 
 ?>
@@ -24,7 +25,7 @@
             <ul class="hidden md:flex flex-1 items-center justify-end gap-12 text-sm">
                 <li class="uppercase cursor-pointer"><a href="dragNdrop.html">Ajouter</a></li>
                 <li class="uppercase cursor-pointer"><a href="search.html">Rechercher</a></li>
-                <button type="button" class="bg-red-400 text-white py-3 px-7 rounded-md uppercase">Logout</button>
+                <a href="../../php/deconnexion.php"><button type="button" class="bg-red-400 text-white py-3 px-7 rounded-md uppercase">Logout</button></a>
                 <div><img src="../img/user.png" alt="Avatar"></div>
             </ul>
             <div class="flex md:hidden flex-1 justify-end cursor-pointer"><i class="text-2xl far fa-caret-square-down"></i></div>
@@ -36,7 +37,7 @@
 
     <!-- Barre de recherche -->
     <div >
-        <form action="../../php/rechercheLibre.php" method="post" class="container flex px-16 mb-4 gap-8">
+        <form action="freeSearch.html" method="post" class="container flex flex-col sm:flex-row px-16 mb-4 gap-8">
             <input type="text" name="recherche" placeholder="Nom de la trace, ville de départ, mot-clé..." 
         class="border-2 border-gray-300 p-4 rounded-md shadow-sm focus:outline-none focus:ring-1 w-full mb-6 focus:ring-purple-400">
         <button type="submit" class="bg-purple-400 text-white py-3 px-7 rounded-md uppercase">Rechercher</button>
@@ -78,8 +79,8 @@
                             $tab_int = $resTab[$i];
                             $temps=$tab_int['temps'];
                             $denivele=$tab_int['denivele'];
-                            $lien_affiche = "show.html?parcours=".$tab_int['id_parcours']."&fichier=".$tab_int['id_fichier'];
-                            $lien_modif = "edit.html?parcours=".$tab_int['id_parcours']."&id_fichier=".$tab_int['id_fichier'];
+                            $lien_affiche = "show.html?id_parcours=".$tab_int['id_parcours']."&id_fichier=".$tab_int['id_fichier'];
+                            $lien_modif = "edit.html?id_parcours=".$tab_int['id_parcours']."&id_fichier=".$tab_int['id_fichier'];
 
                         ?>
                         
@@ -137,7 +138,7 @@
                     $tab_int = $resTab[$i];
                     $temps=$tab_int['temps'];
                     $denivele=$tab_int['denivele'];
-                    $lien = "show.html?parcours=".$tab_int['id_parcours']."&id_fichier=".$tab_int['id_fichier'];
+                    $lien = "show.html?id_parcours=".$tab_int['id_parcours']."&id_fichier=".$tab_int['id_fichier'];
                 ?>
                 <a href=<?php echo $lien ; ?>>
                 <div class="shadow-md rounded-lg border-2 p-4 border-gray-300 text-sm">

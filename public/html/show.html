@@ -1,10 +1,24 @@
 <?php 
     require('../../php/PointsGPX.php');
     require('../../php/connexionDB.php'); 
-
+    
     session_start();
+
+    
+
+    require('../../php/utils/verifIntegrite.php');
+    
+
+
+    if(!isset($_GET['id_parcours']) OR verifier_repertoir_non_vide($_GET['id_parcours']) == 0 ){
+        header('location:../index.html');
+    }
+
+    $id_parcours = $_GET['id_parcours'];
+
     unset($_SESSION['erreurs']);
     
+
 
     function recuperer_points_fichier($id_fichier){
 
@@ -30,7 +44,7 @@
     function liste_fichiers_parcours(){
 
 
-        $id_parcours = $_GET['parcours'];
+        $id_parcours = $_GET['id_parcours'];
         $liste_parcours = "";
         $compteur = 1;
 
@@ -55,7 +69,7 @@
     }
 
     function nom_parcours(){
-        $id_parcours = $_GET['parcours'];
+        $id_parcours = $_GET['id_parcours'];
        
 
         $linkpdo = connexion();
@@ -73,7 +87,7 @@
         $_SESSION['script_leaflet'] = '';
 
         $compteur = 1;
-        $id_parcours = $_GET['parcours'];
+        $id_parcours = $_GET['id_parcours'];
 
         $onglets = "";
         $linkpdo = connexion();
@@ -196,7 +210,7 @@
             <!-- Resultat Trace ".$compteur." -->
             <div id=\"trace".$compteur."\" class=\"result container my-8\">
             
-                        <form action=\"edit.html?fichier=".$data['id_fichier']."&parcours=".$_GET['parcours']."\" method=\"post\">
+                        <form action=\"edit.html?id_fichier=".$data['id_fichier']."&id_parcours=".$_GET['id_parcours']."\" method=\"post\">
                         
 
 
@@ -330,11 +344,15 @@
                             </div>
                             
                     <!-- Submit -->
-                    <div class=\"flex flex-col md:flex-row gap-3 justify-around mb-8\">
+                    <div class=\"flex flex-col lg:flex-row gap-3 justify-around mb-8\">
                         <a href=\"../index.html\" class=\"bg-red-400 text-white py-3 px-7 rounded-md text-center\">Accueil</a>
                         <a download=\"".str_replace(' ','_',$data['nom']).".gpx\" href=\"../../php/fichiers_telecharges/".$data['id_fichier'].".gpx\" class=\"bg-gray-400 text-white py-3 px-7 rounded-md text-center\">Télécharger le fichier</a>
                         <button type=\"submit\" class=\"bg-purple-400 text-white py-3 px-7 rounded-md text-center\">Modifier Trace</button>
+<<<<<<< HEAD
                         <a href=\"../../php/delete.php?fichier=".$data['id_fichier']."&parcours=".$_GET['parcours']."\" class=\"bg-red-400 text-white py-3 px-7 rounded-md text-center\" onclick=\"if(confirm('Etes-vous sûr de supprimer le parcours ?')){}else{return false;};\">Supprimer </a>
+=======
+                        <a href=\"../../php/delete.php?id_fichier=".$data['id_fichier']."&id_parcours=".$_GET['id_parcours']."\" class=\"bg-red-400 text-white py-3 px-7 rounded-md text-center\">Supprimer</a>
+>>>>>>> 637fb52be3e94fad1d349431231cbeb34c31bce2
                     </div>
 
                     </form>
@@ -348,7 +366,6 @@
         return $onglets;
     }
 
-    $id_parcours = $_GET['parcours'];
     $_SESSION['style_leaflet'] = '';
     $onglets = "";
     $linkpdo = connexion();
@@ -388,7 +405,7 @@
     <!-- Style pour faire fonctionner Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ==" crossorigin=""/>
     <title>GPX - Afficher</title>
-     <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
     integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
     crossorigin=""> 
     </script> <!-- Script pour faire fonctionner Leaflet -->
@@ -404,7 +421,7 @@
             <ul class="hidden md:flex flex-1 items-center justify-end gap-12 text-sm">
                 <li class="uppercase cursor-pointer"><a href="dragNdrop.html">Ajouter</a></li>
                 <li class="uppercase cursor-pointer"><a href="search.html">Rechercher</a></li>
-                <button type="button" class="bg-red-400 text-white py-3 px-7 rounded-md uppercase">Logout</button>
+                <a href="../../php/deconnexion.php"><button type="button" class="bg-red-400 text-white py-3 px-7 rounded-md uppercase">Logout</button></a>
                 <div><img src="../img/user.png" alt="Avatar"></div>
             </ul>
             <div class="flex md:hidden flex-1 justify-end cursor-pointer"><i class="text-2xl far fa-caret-square-down"></i></div>

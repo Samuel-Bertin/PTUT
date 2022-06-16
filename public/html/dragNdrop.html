@@ -6,6 +6,8 @@ require('../../php/connexionDB.php');
 session_start();
 ob_start();
 
+require('../../php/utils/verifIntegrite.php');
+
 
 
   function test_extension(){
@@ -19,6 +21,10 @@ ob_start();
           parsing();
         }
     }
+  }
+
+  if(isset($_GET['empty'])){
+    echo "<span style=\"color:#d63024; text-align:center\"> Champs d'envoie vide, sélectionnez un fichier. </span>";
   }
 
   unset($_SESSION['erreurs']);
@@ -39,8 +45,10 @@ ob_start();
   <link rel="stylesheet" href="../style.css" />
 </head>
 
-<body class="relative h-screen flex flex-col justify-center items-center bg-purple-400">
+<body class="bg-purple-400">
 
+    <a href="../index.html" class=" text-white py-3 px-4 rounded-md text-center my-8"> < Retour</a>
+    <div class="relative h-screen flex flex-col justify-center items-center ">
     <div class="card p-8 rounded-lg">
         <form action="../../php/parsing.php" method="POST" enctype="multipart/form-data" class="flex flex-col gap-4 justify-center items-center">
             <h2 class="text-2xl text-center font-bold text-white mb-4">Dépot du fichier :</h2>  
@@ -53,12 +61,13 @@ ob_start();
 
 =======
             <div class="flex flex-column md:flex-row mt-4 gap-8">
-              <a href="../index.html" class="bg-red-400 text-white py-3 px-4 rounded-md text-center">Retour</a>
               <input type="submit" value="Déposer" class="py-3 px-4 rounded-lg bg-purple-100">
             </div>
 
         </form>
     </div>  
+    </div>
+    
 
   <script>
     document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {

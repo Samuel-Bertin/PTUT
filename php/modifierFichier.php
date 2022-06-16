@@ -6,11 +6,13 @@ require 'connexionDB.php';
 session_start();
 verifVariables();
 
+var_dump($_POST);
+
 if (isset($_POST['modifier'])) {
     //si la taille du tableau $_SESSION['erreurs'] est vide, on peut ajouter le parcours
     if (empty($_SESSION['erreurs'])) {
         modifierFichier();
-        header ('Location: ../public/html/show.html?fichier='.$_SESSION['edit']['id_fichier']."&parcours=".$_GET['parcours']);
+        header ('Location: ../public/html/show.html?id_fichier='.$_SESSION['edit']['id_fichier']."&id_parcours=".$_GET['id_parcours']);
     } else {
         var_dump($_SESSION['erreurs']);
         header ('Location: ../public/html/edit.html?id_fichier='.$_SESSION['edit']['id_fichier']);
@@ -20,76 +22,81 @@ if (isset($_POST['modifier'])) {
 
 function modifierFichier() {
 
-    if(!isset($_SESSION['ht'])){
+
+
+    if(!isset($_POST['ht'])){
         $hometrainer = NULL;
     } else{
         $hometrainer = 0;
-        switch($_SESSION['ht']){
+        switch($_POST['ht']){
             case 'oui':
-                $_SESSION['ht'] = 1;
+                $_POST['ht'] = 1;
                 break;
             case 'non':
-                $_SESSION['ht'] = 0;
+                $_POST['ht'] = 0;
                 break;
         }
     }
     
-    if(!isset($_SESSION['meteo'])){
-        $_SESSION['meteo'] = NULL;
+    if(!isset($_POST['meteo'])){
+        $_POST['meteo'] = NULL;
     } 
     
 
-    if(!isset($_SESSION['group'])){
-        $_SESSION['group'] = NULL;
+    if(!isset($_POST['group'])){
+        $_POST['group'] = NULL;
     } else{
-        switch($_SESSION['group']){
+        switch($_POST['group']){
             case 'groupe':
-                $_SESSION['group'] = 1;
+                $_POST['group'] = 1;
                 break;
             case 'seul':
-                $_SESSION['group'] = 0;
+                $_POST['group'] = 0;
                 break;   
         }       
     }
+
+    echo "Deuxieme var_dump <br>";
+    var_dump($_POST); echo "<br>";
 
     $linkpdo = connexion();
     $req = (" UPDATE fichier SET nom = :nom, ville_depart = :ville_depart, date_parcours = :date_parcours, duree = :duree, distance = :distance, 
     description = :description , home_trainer = :home_trainer, groupe = :groupe, denivele = :denivele, type_activite = :type_activite, meteo = :meteo 
     WHERE id_fichier = :id_fichier ");
     $res = $linkpdo->prepare($req);
-    $res->bindParam(':nom', $_SESSION['nom']);
-    $res->bindParam(':description', $_SESSION['desc']);
-    $res->bindParam(':distance', $_SESSION['distance']);
-    $res->bindParam(':ville_depart', $_SESSION['ville']);
-    $res->bindParam(':duree', $_SESSION['duree']);
-    $res->bindParam(':date_parcours', $_SESSION['date']);
-    $res->bindParam(':home_trainer', $_SESSION['ht']);
-    $res->bindParam(':groupe', $_SESSION['groupe']);
-    $res->bindParam(':denivele', $_SESSION['denivele']);
-    $res->bindParam(':type_activite', $_SESSION['activite']);
-    $res->bindParam(':meteo', $_SESSION['meteo']);
-    $res->bindParam(':id_fichier', $_SESSION['edit']['id_fichier']);
-
-    if(! $res->execute(
-        // array(
-        //     'nom' => $_SESSION['nom'],
-        //     'description ' => $_SESSION['desc'],
-        //     'distance ' => $_SESSION['distance'],
-        //     'ville_depart' => $_SESSION['ville'],
-        //     'duree' => $_SESSION['duree'],
-        //     'date_parcours' => $_SESSION['date'],
-        //     'home_trainer' => $_SESSION['ht'],
-        //     'groupe' => $_SESSION['groupe'],
-        //     'denivele' => $_SESSION['denivele'],
-        //     'type_activite' => $_SESSION['activite'],
-        //     'meteo' => $_SESSION['meteo']
-        // )
-    )){
-        $res->debugDumpParamas();
-    }
-
-    
-    
+    // $res->bindParam('nom', $_POST['nom']);
+    // $res->bindParam('description', $_POST['desc']);
+    // $res->bindParam('distance', $_POST['distance']);
+    // $res->bindParam('ville_depart', $_POST['ville']);
+    // $res->bindParam('duree', $_POST['duree']);
+    // $res->bindParam('date_parcours', $_POST['date']);
+    // $res->bindParam('home_trainer', $_POST['ht']);
+    // $res->bindParam('groupe', $_POST['groupe']);
+    // $res->bindParam('denivele', $_POST['denivele']);
+    // $res->bindParam('type_activite', $_POST['activite']);
+    // $res->bindParam('meteo', $_POST['meteo']);
+    // $res->bindParam('id_fichier', $_SESSION['edit']['id_fichier']);      
+    // $res->execute();
+       if($res->execute(array(
+        'nom' => $_POST['nom'],
+        'description' => $_POST['desc'],
+        'distance' => $_POST['distance'],
+        'ville_depart' => $_POST['ville'],
+        'duree' => $_POST['duree'],
+        'date_parcours' => $_POST['date'],
+        'home_trainer' => $_POST['ht'],
+        'groupe' =>$_POST['group'],
+        'denivele' => $_POST['denivele'],
+        'type_activite' => $_POST['activite'],
+        'meteo' => $_POST['meteo'],
+        'id_fichier' => $_SESSION['edit']['id_fichier']
+    )
+   )){
+       echo "update ok";
+   }
+    echo "<pre>";
+    //$res->debugDumpParams();
+    echo "</pre>";
 }
 
 function verifVariables() {

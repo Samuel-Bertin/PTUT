@@ -3,8 +3,15 @@
     require('../../php/connexionDB.php'); 
 
     session_start();
+
+    require('../../php/utils/verifIntegrite.php');
+
+    if(!isset($_GET['id_parcours']) OR verifier_repertoir_non_vide($_GET['id_parcours']) == 0 ){
+        header('location:../index.html');
+    }
+    
     $_SESSION['edit'] = array();
-    $_SESSION['edit']['id_fichier'] = $_GET['fichier'];
+    $_SESSION['edit']['id_fichier'] = $_GET['id_fichier'];
 
     function returnError($errorType) {
         if (isset($_SESSION['erreurs'])) {
@@ -36,7 +43,7 @@
 
     function liste_fichiers_parcours(){
 
-        $id_fichier = $_GET['fichier'];
+        $id_fichier = $_GET['id_fichier'];
         $liste_parcours = "";
         $compteur = 1;
 
@@ -61,7 +68,7 @@
     }
 
     function nom_parcours(){
-        $id_fichier = $_GET['fichier'];
+        $id_fichier = $_GET['id_fichier'];
        
 
         $linkpdo = connexion();
@@ -79,7 +86,7 @@
         $_SESSION['script_leaflet'] = '';
 
         $compteur = 1;
-        $id_fichier = $_GET['fichier'];
+        $id_fichier = $_GET['id_fichier'];
 
         $onglets = "";
         $linkpdo = connexion();
@@ -159,23 +166,23 @@
             if(!isset($data['groupe'])){
                 $groupe = "   
                 <label for=\"seul\"><i class=\"fas fa-user\"></i></label>
-                <input type=\"radio\" name=\"group\" id=\"seul\" value=\"non\" class=\"text-purple-400 focus:ring-1 focus:ring-purple-400\"  >
+                <input type=\"radio\" name=\"group\" id=\"seul\" value=\"seul\" class=\"text-purple-400 focus:ring-1 focus:ring-purple-400\"  >
                 <label for=\"groupe\"><i class=\"fas fa-users\"></i></label>
-                <input type=\"radio\" name=\"group\" id=\"groupe\" value=\"oui\" class=\"text-purple-400 focus:ring-1 focus:ring-purple-400\"  >
+                <input type=\"radio\" name=\"group\" id=\"groupe\" value=\"groupe\" class=\"text-purple-400 focus:ring-1 focus:ring-purple-400\"  >
                 ";
             }elseif($data['groupe'] == 1){
                 $groupe = "   
                 <label for=\"seul\"><i class=\"fas fa-user\"></i></label>
-                <input type=\"radio\" name=\"group\" id=\"seul\" value=\"non\" class=\"text-purple-400 focus:ring-1 focus:ring-purple-400\"  >
+                <input type=\"radio\" name=\"group\" id=\"seul\" value=\"seul\" class=\"text-purple-400 focus:ring-1 focus:ring-purple-400\"  >
                 <label for=\"groupe\"><i class=\"fas fa-users\"></i></label>
-                <input type=\"radio\" name=\"group\" id=\"groupe\" value=\"oui\" class=\"text-purple-400 focus:ring-1 focus:ring-purple-400\" checked  >
+                <input type=\"radio\" name=\"group\" id=\"groupe\" value=\"groupe\" class=\"text-purple-400 focus:ring-1 focus:ring-purple-400\" checked  >
                 ";
             } elseif($data['groupe'] == 0) {
                 $groupe = "   
                 <label for=\"seul\"><i class=\"fas fa-user\"></i></label>
-                <input type=\"radio\" name=\"group\" id=\"seul\" value=\"non\" class=\"text-purple-400 focus:ring-1 focus:ring-purple-400\" checked  >
+                <input type=\"radio\" name=\"group\" id=\"seul\" value=\"seul\" class=\"text-purple-400 focus:ring-1 focus:ring-purple-400\" checked  >
                 <label for=\"groupe\"><i class=\"fas fa-users\"></i></label>
-                <input type=\"radio\" name=\"group\" id=\"groupe\" value=\"oui\" class=\"text-purple-400 focus:ring-1 focus:ring-purple-400\"   >
+                <input type=\"radio\" name=\"group\" id=\"groupe\" value=\"groupe\" class=\"text-purple-400 focus:ring-1 focus:ring-purple-400\"   >
                 ";
             }
 
@@ -203,7 +210,7 @@
             <!-- Resultat Trace ".$compteur." -->
             <div id=\"trace".$compteur."\" class=\"result container my-8\">
             
-                        <form action=\"../../php/modifierFichier.php?parcours=".$_GET['parcours']."\" method=\"post\">
+                        <form action=\"../../php/modifierFichier.php?id_parcours=".$_GET['id_parcours']."\" method=\"post\">
                         
 
 
@@ -340,29 +347,32 @@
                                         </input>
                                     
                             </div>
-                            ";
-                if($compteur == 1){
-                    $onglets .=                     
-                    "
+
                     <!-- Submit -->
                     <div class=\"flex flex-col md:flex-row gap-3 justify-around mb-8\">
                         <a href=\"../index.html\" class=\"bg-red-400 text-white py-3 px-7 rounded-md text-center\">Accueil</a>
+<<<<<<< HEAD
                         
 						<input type=\"submit\" class=\"bg-purple-400 text-white py-3 px-7 rounded-md text-center\" id=\"modifier\" name=\"modifier\" value=\"Modifier\" onclick=\"if(confirm('Etes-vous sûr de modifier le parcours ?')){}else{return false;};\" />
+=======
+                        <button type=\"submit\" name=\"modifier\" class=\"bg-purple-400 text-white py-3 px-7 rounded-md text-center\">Modifier Trace</button>
+                        <a href=\"../../php/delete.php?id_fichier=".$data['id_fichier']."&id_parcours=".$_GET['id_parcours']."\" class=\"bg-red-400 text-white py-3 px-7 rounded-md text-center\">Supprimer</a>
+                    </div>
+>>>>>>> 637fb52be3e94fad1d349431231cbeb34c31bce2
 
                     </div>
                     </form>
                     </div>
                     
                 ";
-                }
+                
                 $onglets .= "</form> </div>";
                 $compteur = $compteur + 1;
         }
         return $onglets;
     }
 
-    $id_fichier = $_GET['fichier'];
+    $id_fichier = $_GET['id_fichier'];
     $_SESSION['style_leaflet'] = '';
     $onglets = "";
     $linkpdo = connexion();
@@ -418,7 +428,7 @@
             <ul class="hidden md:flex flex-1 items-center justify-end gap-12 text-sm">
                 <li class="uppercase cursor-pointer"><a href="dragNdrop.html">Ajouter</a></li>
                 <li class="uppercase cursor-pointer"><a href="search.html">Rechercher</a></li>
-                <button type="button" class="bg-red-400 text-white py-3 px-7 rounded-md uppercase">Logout</button>
+                <a href="../../php/deconnexion.php"><button type="button" class="bg-red-400 text-white py-3 px-7 rounded-md uppercase">Logout</button></a>
                 <div><img src="../img/user.png" alt="Avatar"></div>
             </ul>
             <div class="flex md:hidden flex-1 justify-end cursor-pointer"><i class="text-2xl far fa-caret-square-down"></i></div>
