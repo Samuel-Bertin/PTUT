@@ -21,17 +21,12 @@
             $query = "insert into repertoire (nom) values (:nom_repertoire)";
             $preparation_query = $linkpdo->prepare($query);
 
-            if($preparation_query->execute(
+            $preparation_query->execute(
                 array(
                     'nom_repertoire' => $_SESSION['nom']
                 )
-            )){
-                echo "Repertoire créé <br>";
-            } else {
-                echo "Erreur : <br>";
-				echo $preparation_query->debugDumpParams();
-				echo "<br><br>";
-            }
+            );
+            
 
             $query = "select LAST_INSERT_ID()";     // permet de récupérer la clé primaire de la derniere ligne insérée une connexion
             $preparation_query = $linkpdo->prepare($query);

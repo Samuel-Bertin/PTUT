@@ -10,7 +10,7 @@
     
 
 
-    if(!isset($_GET['id_parcours']) OR verifier_repertoir_non_vide($_GET['id_parcours']) == 0 ){
+    if(!isset($_GET['id_parcours']) OR verifier_repertoire_non_vide($_GET['id_parcours']) == 0 ){
         header('location:../index.html');
     }
 
@@ -23,22 +23,18 @@
     function recuperer_points_fichier($id_fichier){
 
             $linkpdo = connexion();
-             $req = (" SELECT latitude, longitude FROM point_gpx where id_fichier =".$id_fichier);
-             $res = $linkpdo->prepare($req);
-             $res->execute();
+            $req = (" SELECT latitude, longitude FROM point_gpx where id_fichier =".$id_fichier);
+            $res = $linkpdo->prepare($req);
+            $res->execute();
  
-             $liste_points=array();
-             while($data = $res->fetch()){
-                 $temp = array();
-                 array_push($temp,$data['latitude'],$data['longitude']);
-                 array_push($liste_points,$temp);
-             }
- 
-         //     echo "var dump des points recoltés: <br>";
-         //    echo "<pre>";
-         //     print_r($liste_points);
-         //     echo "</pre>";
-             return $liste_points;
+            $liste_points=array();
+            while($data = $res->fetch()){
+                $temp = array();
+                array_push($temp,$data['latitude'],$data['longitude']);
+                array_push($liste_points,$temp);
+            }
+            
+            return $liste_points;
     }
 
     function liste_fichiers_parcours(){

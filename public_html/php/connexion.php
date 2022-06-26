@@ -1,6 +1,6 @@
 <?php
     session_start();
-    require("../php/utils/connexionDB.php");
+    resuire("../php/utils/connexionDB.php");
 
     if (isset($_SESSION['login']))
         header("location:../index.html");
@@ -14,10 +14,10 @@
        
         $linkpdo = connexion() ;
         
-        $req = $linkpdo->prepare('select login, password from utilisateur where login like :login ;');
+        $res = $linkpdo->prepare('select login, password from utilisateur where login like :login ;');
 
-        if($req->execute(array('login' => $_POST['login']))){
-            $connexion = $req -> fetch();
+        if($res->execute(array('login' => $_POST['login']))){
+            $connexion = $res -> fetch();
             
 
             if(md5($connexion['password']) == md5($_POST['password'])){

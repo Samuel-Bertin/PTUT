@@ -4,7 +4,7 @@
         header('location:login.html');
     }
     
-    function verifier_repertoir_non_vide($id_parcours){
+    function verifier_repertoire_non_vide($id_parcours){
         $linkpdo = connexion();
         $req = (" SELECT count(id_fichier) as nb_fichiers from fichier where id_parcours =".$id_parcours);
         $res = $linkpdo->prepare($req);

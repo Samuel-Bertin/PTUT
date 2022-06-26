@@ -1,6 +1,6 @@
 <?php 
 
-require 'config.php';
+require 'utils/config.php';
 require 'utils/connexionDB.php';
 
 session_start();

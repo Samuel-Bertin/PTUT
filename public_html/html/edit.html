@@ -7,7 +7,7 @@
    require('../php/utils/verifIntegrite.php');
     verifier_admin();
 
-    if(!isset($_GET['id_parcours']) OR verifier_repertoir_non_vide($_GET['id_parcours']) == 0 ){
+    if(!isset($_GET['id_parcours']) OR verifier_repertoire_non_vide($_GET['id_parcours']) == 0 ){
         header('location:../index.html');
     }
     
