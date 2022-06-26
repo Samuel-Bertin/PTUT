@@ -1,6 +1,6 @@
 <?php
     session_start();
-    require("../php/connexionDB.php");
+    require("../php/utils/connexionDB.php");
 
     if (isset($_SESSION['login']))
         header("location:../index.html");

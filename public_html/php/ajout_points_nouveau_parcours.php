@@ -1,6 +1,6 @@
 <?php
     require('PointsGPX.php');
-    require('connexionDB.php');
+    require('utils/connexionDB.php');
     
     session_start();
     ob_start();

@@ -1,6 +1,6 @@
 <?php
 
-require('connexionDB.php');
+require('utils/connexionDB.php');
 require('search.php');
 
 if(!empty($_POST['recherche'])){

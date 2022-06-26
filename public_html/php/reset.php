@@ -1,5 +1,5 @@
 <?php 
-require("connexionDB.php");
+require("utils/connexionDB.php");
 require("envoimail/Exception.php");
 require("envoimail/PHPMailer.php");
 require("envoimail/SMTP.php");

@@ -1,6 +1,6 @@
 <?php
  session_start();
- require("connexionDB.php");
+ require("utils/connexionDB.php");
 
  
  if (isset($_SESSION['login']))

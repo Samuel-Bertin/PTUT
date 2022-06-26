@@ -1,5 +1,5 @@
 <?php
-        require('connexionDB.php'); 
+        require('utils/connexionDB.php'); 
     
         session_start();
 

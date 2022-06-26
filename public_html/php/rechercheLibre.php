@@ -1,6 +1,6 @@
 <?php
 
-    require 'connexionDB.php';
+    require 'utils/connexionDB.php';
 
     function creerRequeteRechercheLibre() {
 

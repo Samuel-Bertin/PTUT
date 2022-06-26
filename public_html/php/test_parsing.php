@@ -1,6 +1,6 @@
 <?php
 include('PointsGPX.php');
-require('connexionDB.php');
+require('utils/connexionDB.php');
 
 
 function ajouterPointDB($liste_points){

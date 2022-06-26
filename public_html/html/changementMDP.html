@@ -2,7 +2,7 @@
 session_start();
 
 
-require("../php/connexionDB.php");
+require("../php//utils/connexionDB.php");
 
 $linkpdo=connexion();
 $req = $linkpdo->prepare('select login from Utilisateur where tokeninit like :token');

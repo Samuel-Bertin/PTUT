@@ -2,7 +2,7 @@
     
 
     function recupDonneesAffichageRecherche($requete){
-        require("connexionDB.php");
+        require("utils/connexionDB.php");
         $linkpdo=connexion();
 
         $req=$linkpdo->prepare("$requete");
