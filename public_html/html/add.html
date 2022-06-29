@@ -181,8 +181,21 @@
                     </div>
 
                     <div class="ajouter_image border-2 p-8 w-full">
-                        <h3 class="mb-3 text-lg font-semibold">Image</h3>
-                        <input type="file" name="add_image" id="add_image">
+                        <h3 class="mb-3 text-lg font-semibold">Champs obligatoires : </h3>
+                        <div class="flex gap-12">
+                            <ul>
+                                <li>Le nom de la trace</li>
+                                <li>Le type d’activité</li>
+                                <li>La date de la trace</li>
+                                <li>La distance du parcours</li>  
+                            </ul>
+                            <ul>
+                                <li>Le temps de parcours</li>
+                                <li>Le dénivelé du parcours </li>
+                                <li>La ville (le lieu) de départ</li>  
+                            </ul>
+                        </div>
+                        
                     </div>
 
                 </div>
@@ -309,24 +322,7 @@
                     </div>
                 </div>
 
-                <!-- Membres du groupe -->
-                <div class="input_text mb-8">
-                    <div class="label_error flex flex-row gap-8 mb-2">
-                        <label for="membre">Membres du groupe :</label>
-                        <span class="erreur text-red-500 text-sm"></span>
-                    </div>
-                    <input type="text" list="membres" name="membre" id="membre" class="border-2 border-gray-300 p-4 rounded-md shadow-sm w-full focus:outline-none focus:ring-1 focus:ring-purple-400">
-                                <datalist id="membres">
-                                    <option value="Famille"></option>
-                                    <option value="Club de VTT"></option>
-                                    <option value="Club de Course"></option>
-                                    <option value="Micheline"></option>
-                                    <option value="Patrick"></option>
-                                    <option value="Bruno"></option>
-                                </datalist>
-                            </input>
-                        
-                </div>
+                
 
                 <!-- Submit -->
                 <div class="flex flex-col md:flex-row gap-3 justify-around mb-8">
