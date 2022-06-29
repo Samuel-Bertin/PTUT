@@ -1,8 +1,9 @@
 <?php
-   require('php/utils/connexionDB.php');
     
     session_start();
     ob_start();
+
+    require('php/utils/connexionDB.php');
 
     if(!isset($_SESSION['connecte'])){
         header('location:html/login.html');
@@ -12,10 +13,10 @@
     function verifDatas(){
         $linkpdo = connexion();
         $sql = "SELECT * FROM fichier";
-        $preparation_query = $linkpdo->prepare($sql);
-        $preparation_query->execute();
+        $res = $linkpdo->prepare($sql);
+        $res->execute();
         //si le résultat de la requete est vide alors on affiche le message
-        if($preparation_query->rowCount() == 0){
+        if($res->rowCount() == 0){
             echo "<br><br><br><br><div class='text-lg text-center'>Aucun parcours n'a été trouvé. Veuillez renseigner une trace.</div>";
         } 
     }
@@ -28,33 +29,35 @@
         $req = (" SELECT nom, ville_depart as ville, duree, distance, id_fichier, id_parcours from fichier order by id_fichier desc LIMIT 5");
         $res = $linkpdo->prepare($req);
         $res->execute();
-
-        while($data = $res->fetch()){
-            $carroussel .= "
-                <div class=\"swiper-slide\">
-                    <!-- Carte -->
-                    <div class=\"card p-4 rounded-md flex flex-col w-96 max-w-sm items-center gap-4 bg-gray-100\" onclick=\"ouvrirTrace(".$data['id_fichier'].",".$data['id_parcours'].")\">
-                        <h3 class=\"uppercase font-semibold\">".$data['nom']."</h3>
-                        <img src=\"../img/On-the-Top.-135x90.jpg\" alt=\"Miniature Trace\" class=\"h-32 min-h-24\">
-                        <ul class=\"flex flex-col gap-3\">
-                            <li class=\"flex gap-3\">
-                                <i class=\"fas fa-map-marker-alt\"></i>
-                                <p>".$data['ville']."</p>
-                            </li>
-                            <li class=\"flex gap-3\">
-                                <i class=\"fas fa-stopwatch\"></i>
-                                <p>".$data['duree']."\"</p>
-                            </li>
-                            <li class=\"flex gap-3\">
-                                <i class=\"fas fa-ruler\"></i>
-                                <p>".$data['distance']."</p>
-                            </li>
-                        </ul>
+        if($res->rowCount() == 0){
+            $carroussel .= "<div class='text-xl text-center mb-8'>Aucun parcours n'a été trouvé. Veuillez renseigner une trace.</div>";
+        } else {
+            while($data = $res->fetch()){
+                $carroussel .= "
+                    <div class=\"swiper-slide\">
+                        <!-- Carte -->
+                        <div class=\"card p-4 rounded-md flex flex-col w-96 max-w-sm items-center gap-4 bg-gray-100\" onclick=\"ouvrirTrace(".$data['id_fichier'].",".$data['id_parcours'].")\">
+                            <h3 class=\"uppercase font-semibold\">".$data['nom']."</h3>
+                            <img src=\"../img/On-the-Top.-135x90.jpg\" alt=\"Miniature Trace\" class=\"h-32 min-h-24\">
+                            <ul class=\"flex flex-col gap-3\">
+                                <li class=\"flex gap-3\">
+                                    <i class=\"fas fa-map-marker-alt\"></i>
+                                    <p>".$data['ville']."</p>
+                                </li>
+                                <li class=\"flex gap-3\">
+                                    <i class=\"fas fa-stopwatch\"></i>
+                                    <p>".$data['duree']."\"</p>
+                                </li>
+                                <li class=\"flex gap-3\">
+                                    <i class=\"fas fa-ruler\"></i>
+                                    <p>".$data['distance']."</p>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-            ";
+                ";
+            }
         }
-
         return $carroussel;
 
     }
@@ -139,7 +142,7 @@
 
         <div class="container">
             <h2 class="text-xl text-center mb-8">Vos derniers exploits...</h2>
-            <?php  verifDatas(); ?>
+            <?php // verifDatas(); ?>
             <!-- Slider main container -->
             <div class="swiper">
                 <!-- Additional required wrapper -->
