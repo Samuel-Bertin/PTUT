@@ -1,7 +1,7 @@
 <?php
 // Permettra de passer le tableau d'objet qui ressort du parsing et les données extraites/calculées pour les proposer
 require('../php/PointsGPX.php');
-require('../php/connexionDB.php');
+require('../php/utils/connexionDB.php');
 
 session_start();
 ob_start();
@@ -17,16 +17,13 @@ verifier_admin();
         $extension = finfo_file($finfo,$_FILES['myFile']['tmp_name']); // Va chercher l'image MIME du fichier qui se trouve à l'emplacement 'tmp_name' (nom du fichier dans le repertoire temporaire)
 
         if($extension != "text/xml"){
-          echo "<span style=\"color:#d63024; text-align:center\"> Le fichier que vous souhaitez télécharger n'est pas un fichier GPX. </span>";
         } else { 
           parsing();
         }
     }
   }
 
-  if(isset($_GET['empty'])){
-    echo "<span style=\"color:#d63024; text-align:center\"> Champs d'envoie vide, sélectionnez un fichier. </span>";
-  }
+
 
   unset($_SESSION['erreurs']);
   unset($_SESSION['nom']);
@@ -57,7 +54,15 @@ verifier_admin();
                 <span class="drop-zone__prompt">Cliquez ou faites glisser le fichier ici</span>
                 <input type="file" name="myFile" class="drop-zone__input" />
             </div>
-            <?php if(isset($_FILES)) { test_extension();} ?>
+            <?php
+            if(isset($_SESSION['erreur']['formulaire_vide'])){
+              echo "<span style=\"color:#d63024; text-align:center\"> Champs d'envoie vide, sélectionnez un fichier. </span>";
+              unset($_SESSION['erreur']['formulaire_vide']);
+            }elseif(isset($_SESSION['erreur']['extension_fichier'])){
+              echo "<span style=\"color:#d63024; text-align:center\"> Fichier ne correspondant pas, sélectionnez un fichier GPX. </span>";
+              unset($_SESSION['erreur']['extension_fichier']);
+            }
+            ?>
             <div class="flex flex-column md:flex-row mt-4 gap-8">
               <input type="submit" value="Déposer" class="py-3 px-4 rounded-lg bg-purple-100">
             </div>
