@@ -15,9 +15,9 @@
     $_SESSION['edit']['id_fichier'] = $_GET['id_fichier'];
 
     function returnError($errorType) {
-        if (isset($_SESSION['erreurs'])) {
-            if(isset($_SESSION['erreurs'][$errorType])){
-                return $_SESSION['erreurs'][$errorType];
+        if (isset($_SESSION['erreurs_info'])) {
+            if(isset($_SESSION['erreurs_info'][$errorType])){
+                return $_SESSION['erreurs_info'][$errorType];
             } else {
                 return "";
             }

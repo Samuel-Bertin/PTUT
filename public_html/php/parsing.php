@@ -6,15 +6,13 @@
     ob_start();
 
     // Vérification qu'un fichier a été déposé
-    if(empty($_FILES['myFile']['name'] && empty($_FILES['myFile']['size'] == 0))){
+    if(empty($_FILES['myFile']['name'])){
         $_SESSION['erreur']['formulaire_vide'] = 1;
         header('location:../html/dragNdrop.html?empty=1');
-    } else {
-        var_dump($_FILES);
     }
 
     // Vérification de l'extension/type du fichier
-    if(isset($_FILES['myFile']) && $_FILES['myFile']['size'] != 0){
+    if($_FILES['myFile']['size'] != 0){
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $extension = finfo_file($finfo,$_FILES['myFile']['tmp_name']); // Va chercher l'image MIME du fichier qui se trouve à l'emplacement 'tmp_name' (nom du fichier dans le repertoire temporaire)
 
@@ -22,6 +20,9 @@
             $_SESSION['erreur']['extension_fichier'] = 1;
             header('location:../html/dragNdrop.html');
         } 
+    } else{
+        $_SESSION['erreur']['vide'] = 1;
+        header('location:../html/dragNdrop.html');
     }
 
     
@@ -146,6 +147,7 @@
     $_SESSION['duree'] = $difference;
     $_SESSION['tableauPoints'] = $tab_points;
 
+    // Stockage du fichier sur le serveur
     $_SESSION['nom_fichier_telecharge'] = $_FILES['myFile']['name'];
     $tmpname =  $_FILES['myFile']['tmp_name'];
     move_uploaded_file($tmpname,"fichiers_telecharges/temp/".$_SESSION['nom_fichier_telecharge'].".gpx");

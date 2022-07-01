@@ -11,21 +11,8 @@ require('../php/utils/verifIntegrite.php');
 verifier_admin();
 
 
-  function test_extension(){
-      if(isset($_FILES['myFile']) && $_FILES['myFile']['size'] != 0){
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $extension = finfo_file($finfo,$_FILES['myFile']['tmp_name']); // Va chercher l'image MIME du fichier qui se trouve à l'emplacement 'tmp_name' (nom du fichier dans le repertoire temporaire)
 
-        if($extension != "text/xml"){
-        } else { 
-          parsing();
-        }
-    }
-  }
-
-
-
-  unset($_SESSION['erreurs']);
+  unset($_SESSION['erreurs_info']);
   unset($_SESSION['nom']);
   unset($_SESSION['ville']);
   unset($_SESSION['activite']);

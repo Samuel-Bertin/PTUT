@@ -30,39 +30,10 @@
         }
     }
 
-    function ajouterPointDB(){
-        $liste_points = $_SESSION['tableauPoints'];
-        if(!empty($liste_points)){
-            
-            $linkpdo = connexion();
-            foreach($liste_points as $point){
-                $query = "insert into POINT_GPX(timecode,altitude,latitude,longitude,type,Id_Fichier) values (:timestamp,:alt,:lat,:long,:type,:id_fichier)";
-                echo $query."<br>";
-                $preparation_query = $linkpdo->prepare($query);
-    
-                if($preparation_query->execute(array(
-                    'timestamp' => $point->getTime(),
-                    'alt' => $point->getEle(),
-                    'lat' => $point->getLat(),
-                    'long' => $point->getLong(),
-                    'type' => 'trkpt',
-                    'id_fichier' => $id_fichier
-                )))
-                {
-                    echo "Point enregistré <br><br>";
-                } else {	
-                    echo "Erreur : <br>";
-                    echo "<pre>".$preparation_query->debugDumpParams()."</pre>";
-                    echo "<br><br>";
-                }
-            }
-        }
-    }
-
     function returnError($errorType) {
-        if (isset($_SESSION['erreurs'])) {
-            if(isset($_SESSION['erreurs'][$errorType])){
-                return $_SESSION['erreurs'][$errorType];
+        if (isset($_SESSION['erreurs_info'])) {
+            if(isset($_SESSION['erreurs_info'][$errorType])){
+                return $_SESSION['erreurs_info'][$errorType];
             } else {
                 return "";
             }
@@ -177,7 +148,7 @@
                     <div class="flex flex-col gap-8 nom_desc">
 
                         <span class='erreur text-sm text-red-500'><?php echo returnError('nom'); ?></span>
-                        <input type="text" name="nom" placeholder="Nom de la trace" value="<?php if (isset($_SESSION['nom'])) {echo $_SESSION['nom'];}?>"
+                        <input type="text" name="nom" placeholder="Nom de la trace *" value="<?php if (isset($_SESSION['nom'])) {echo $_SESSION['nom'];}?>"
                         class="border-2 border-gray-300 p-4 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-purple-400">
 
                         <textarea name="desc" id="desc" cols="70" rows="4" placeholder="Description de la trace"
@@ -202,7 +173,7 @@
 
                         <div class="input_text">
                             <div class="label_error flex flex-row gap-8 mb-2">
-                                <label for="distance">Distance</label>
+                                <label for="distance">Distance *</label>
                                 <span class="erreur text-sm text-red-500"><?php echo returnError('distance'); ?></span>
                             </div>
                             <input type="text" name="distance" id="distance" <?php echo placeholder("distance"); ?>
@@ -211,7 +182,7 @@
 
                         <div class="input_text">
                             <div class="label_error flex flex-row gap-8 mb-2">
-                                <label for="temps">Temps</label>
+                                <label for="temps">Temps *</label>
                                 <span class="erreur text-sm text-red-500"><?php echo returnError('duree'); ?></span>
                             </div>
                             <input  type="time" step="1" name="duree" id="temps"<?php echo placeholder("duree"); ?>
@@ -220,7 +191,7 @@
 
                         <div class="input_text">
                             <div class="label_error flex flex-row gap-8 mb-2">
-                                <label for="denivele">Dénivelé</label>
+                                <label for="denivele">Dénivelé *</label>
                                 <span class="erreur text-sm text-red-500"><?php echo returnError('denivele'); ?></span>
                             </div>
                             <input  type="text" name="denivele" id="denivele" <?php echo placeholder("denivele"); ?>
@@ -229,7 +200,7 @@
 
                         <div class="input_text">
                             <div class="label_error flex flex-row gap-8 mb-2">
-                                <label for="denivele">Type d'activité</label>
+                                <label for="denivele">Type d'activité *</label>
                                 <span class="erreur text-sm text-red-500"><?php echo returnError('activite'); ?></span>
                             </div>
                             <input type="text" list="activites" name="activite" id="activite" class="border-2 border-gray-300 p-4 rounded-md shadow-sm w-full focus:outline-none focus:ring-1 focus:ring-purple-400" <?php if (isset($_SESSION['activite'])) {echo $_SESSION['activite'];}?>">
@@ -247,7 +218,7 @@
 
                         <div class="input_text">
                             <div class="label_error flex flex-row gap-8 mb-2">
-                                <label for="date">Date</label>
+                                <label for="date">Date *</label>
                                 <span class="erreur text-sm text-red-500"><?php echo returnError('date'); ?></span>
                             </div>
                             <input type="date" name="date" id="date" value="<?php echo $_SESSION['date']; ?>"
@@ -256,7 +227,7 @@
 
                         <div class="input_text">
                             <div class="label_error flex flex-row gap-8 mb-2">
-                                <label for="ville">Ville Départ</label>
+                                <label for="ville">Ville Départ *</label>
                                 <span class="erreur text-sm text-red-500"><?php echo returnError('ville'); ?></span>
                             </div>
                             <input type="text" list="villes" name="ville" id="ville" class="border-2 border-gray-300 p-4 rounded-md shadow-sm w-full focus:outline-none focus:ring-1 focus:ring-purple-400" value="<?php if (isset($_SESSION['ville'])) {echo $_SESSION['ville'];}?>">
